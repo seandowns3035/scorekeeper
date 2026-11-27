@@ -340,12 +340,12 @@ button,.chip,.row,.key,.tile,.slot,.n7,.mod,.die{transition:transform .14s cubic
  .sheet.closing{animation:outD .2s ease-in forwards;pointer-events:none}
  .scrim.closing{animation:fadeO .18s ease-in forwards;pointer-events:none}.scrim.closing .modal{animation:outD .18s ease-in forwards}
  .scrim{animation:fadeI .18s ease-out}
+ .scrim.still,.scrim.still .modal{animation:none}
  .tot.bump{animation:bump .55s cubic-bezier(.3,1.6,.5,1)}
  .delta{position:absolute;right:16px;top:6px;font-weight:900;font-size:16px;pointer-events:none;animation:floatUp 1.3s ease-out forwards}
  .nav button.pop svg{animation:pop .4s cubic-bezier(.3,1.8,.5,1)}
  .lcrown{display:inline-block;width:16px;height:16px;color:var(--ac);margin-left:6px;vertical-align:-1px}
  .lcrown.new{animation:crown .7s cubic-bezier(.3,1.8,.5,1)}
- .die.rolling{animation:tumble .22s linear infinite}.die.rolling:nth-child(2n){animation-duration:.18s;animation-direction:reverse}.die.rolling:nth-child(3n){animation-duration:.26s}
  .dtotal b{animation:bump .45s cubic-bezier(.3,1.6,.5,1)}
  .tring.urgent .face b{animation:beat 1s ease-in-out infinite}.tring.urgent #tarc{stroke:var(--bad)}
 }
@@ -355,10 +355,10 @@ button,.chip,.row,.key,.tile,.slot,.n7,.mod,.die{transition:transform .14s cubic
 @keyframes floatUp{0%{opacity:0;transform:translateY(8px)}15%{opacity:1}100%{opacity:0;transform:translateY(-26px)}}
 @keyframes pop{0%{transform:scale(.7)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
 @keyframes crown{0%{transform:scale(0) rotate(-30deg)}100%{transform:scale(1) rotate(0)}}
-@keyframes tumble{0%{transform:rotate(0) translateY(0)}25%{transform:rotate(12deg) translateY(-6px)}50%{transform:rotate(-8deg) translateY(2px)}75%{transform:rotate(6deg) translateY(-4px)}100%{transform:rotate(0)}}
 @keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 @keyframes glow{from{box-shadow:inset 0 0 0 2px var(--ac),0 0 0 6px color-mix(in srgb,var(--ac) 25%,transparent)}}
 .confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+.empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:12vh 20px 0}.empty .eart{width:110px;height:110px;margin-bottom:10px;opacity:.9}.empty b{font-size:24px;font-weight:900}.empty p{color:var(--mute);margin:0 0 16px}
 /* modal */
 .scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:40;display:flex;align-items:flex-end;justify-content:center;padding:16px 16px calc(env(safe-area-inset-bottom) + 16px)}
 .modal{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:20px;width:100%;max-width:480px}.modal.anim{animation:up .2s}
@@ -415,12 +415,13 @@ const FLAG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wi
 const X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>';
 const BACK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
 const DOTS='<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
-const APP_VERSION='v1.1';
+const APP_VERSION='v1.2';
 const DEL='⌫';
 const GRIP='<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.8"/><circle cx="15" cy="6" r="1.8"/><circle cx="9" cy="12" r="1.8"/><circle cx="15" cy="12" r="1.8"/><circle cx="9" cy="18" r="1.8"/><circle cx="15" cy="18" r="1.8"/></svg>';
 const gameKeys=()=>{const all=Object.keys(GAMES),o=(S.order||[]).filter(k=>all.includes(k));return o.concat(all.filter(k=>!o.includes(k)))};
 const IC_SON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/></svg>';
 const IC_SOFF='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5"/></svg>';
+const IC_GM='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>';
 const IC_SC='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>';
 const IC_TM='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M18.5 6l1.5-1.5"/></svg>';
 const IC_DC='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/></svg>';
@@ -433,8 +434,8 @@ const BOOK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wi
 const HOME='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/></svg>';
 
 
-const S={prefs:Object.assign({sound:true},LS.get('prefs',{})),toast:null,reorder:false,order:LS.get('order',null),tab:'scores',cfgs:LS.get('cfgs',{}),players:LS.get('players',[]),lineups:LS.get('lineups',{}),game:LS.get('game',null),view:'home',setup:null,draft:null,modal:null,seat:false,edit:false};
-if(S.game)S.view='board';
+const S={tab:'games',prefs:Object.assign({sound:true},LS.get('prefs',{})),toast:null,reorder:false,order:LS.get('order',null),cfgs:LS.get('cfgs',{}),players:LS.get('players',[]),lineups:LS.get('lineups',{}),game:LS.get('game',null),view:'home',setup:null,draft:null,modal:null,seat:false,edit:false};
+if(S.game)S.tab='scores';
 const persist=()=>{LS.set('players',S.players);LS.set('lineups',S.lineups);LS.set('game',S.game)};
 const app=document.getElementById('app');
 
@@ -499,10 +500,12 @@ const nameOf=(g,id)=>esc((g.players.find(p=>p.id===id)||{}).name||'');
 const colorOf=(g,id)=>(g.players.find(p=>p.id===id)||{}).color||'#999';
 const dotH=c=>`<span class="dot" style="background:${c}"></span>`;
 
+function noGameV(){document.documentElement.dataset.game='';
+ return `<div class="wrap"><div class="bar"><span class="ghost"></span><h1>Score</h1><span class="ghost"></span></div><div class="empty">${ART.generic.replace('class="art"','class="eart"')}<b>No game going</b><p>Pick a game to start keeping score.</p><button class="btn" data-a="navtab" data-v="games">Choose a game</button></div></div>`}
 function home(){
  document.documentElement.dataset.game='';
  const g=S.game;let h=`<div class="wrap"><div class="title">Scorekeeper</div>`;
- if(g){const top=ranked(g)[0];h+=`<div class="card"><div class="resume"><div><b>${esc(gdef(g).name)} ${isOver(g)?'finished':'in progress'}</b><small>${g.rounds.length} round${g.rounds.length===1?'':'s'} played${top&&g.rounds.length?' · '+esc(top.p.name)+(isOver(g)?' won':' leads'):''}</small></div><button class="btn sm" data-a="resume">Resume</button></div></div><h2>Start something new</h2>`}
+ if(g){const top=ranked(g)[0];h+=`<div class="card"><div class="resume"><div><b>${esc(gdef(g).name)} ${isOver(g)?'finished':'in progress'}</b><small>${g.rounds.length} round${g.rounds.length===1?'':'s'} played${top&&g.rounds.length?' · '+esc(top.p.name)+(isOver(g)?' won':' leads'):''}</small></div><button class="btn sm" data-a="resume">Open</button></div></div><h2>Start something new</h2>`}
  else h+=`<h2><span>Games</span></h2>`;
  h=h.replace(/<h2>(?:<span>)?(Start something new|Games)(?:<\/span>)?<\/h2>$/,(m,t)=>`<h2><span>${t}</span><button class="sortbtn" data-a="reorder">${S.reorder?'Done':'Reorder'}</button></h2>`);
  if(S.reorder)h+=`<p class="hint" style="margin:-4px 4px 10px">Drag a tile to move it. Tap Done when you're finished.</p>`;
@@ -541,7 +544,7 @@ function boardV(){
  const list=S.seat?g.players.map(p=>({p,t:T[p.id],rank:rankOf[p.id],m:g.key==='phase10'?madeCount(g,p.id):0})):rk;
  const showWin=over&&g.dismissed!==n;
  if(showWin&&!S.peek)return endV();
- let h=`<div class="wrap"><div class="bar"><button class="icon" data-a="home" aria-label="Home">${BACK}</button><h1>${esc(d.name)}</h1><button class="icon" data-a="rules" data-k="${g.key}" aria-label="Rules">${BOOK}</button><button class="icon" data-a="menu" aria-label="Menu">${DOTS}</button></div>`;
+ let h=`<div class="wrap"><div class="bar"><span class="ghost"></span><span class="ghost"></span><h1>${esc(d.name)}</h1><button class="icon" data-a="rules" data-k="${g.key}" aria-label="Rules">${BOOK}</button><button class="icon" data-a="menu" aria-label="Menu">${DOTS}</button></div>`;
  if(showWin)h+=`<div class="card endnote">${CROWN}<span>Game over</span><button class="btn sm" data-a="unpeek">See results</button></div>`;
  else{const sub=roundSub(g,n);const dl=dealer(g,n),st=starter(g,n),fin=g.key==='farkle'&&g.finalAt!=null&&n===g.finalAt;h+=`<div class="status"><b>${fin?'Final turns':d.rounds&&n>=d.rounds?'Final':roundTitle(g,n)}</b><button class="stbtn" data-a="whofirst">${fin?`${esc(nameOf(g,g.trig))} hit ${d.target.toLocaleString()}<br>`:sub?esc(sub)+'<br>':''}${fin?`Last turn${g.finalIds.length>1?'s':''}: <b>${g.finalIds.map(id=>esc(nameOf(g,id))).join(', ')}</b>`:d.fixedStart?`<b>${esc(st.name)}</b> rolls first ›`:g.teamSetup?`<b>${esc(st.name)}</b> first ›`:`${esc(dl.name)} deals · <b>${esc(st.name)}</b> first ›`}</button></div>`}
  h+=`<h2><span>${g.key==='phase10'?'Most phases, then fewest points':`${d.low?'Lowest':'Highest'} score leads${d.target?' · ends at '+d.target.toLocaleString():d.rounds?'':' · no end set'}`}</span><button class="sortbtn" data-a="seat">${S.seat?'Sort by score':'Seat order'}</button></h2>`;
@@ -735,7 +738,7 @@ function rulesFor(key){
   ['Ending early','Rounds 2, 3 and 4 can stop as soon as every scoring card is taken — all four queens, all thirteen hearts, or the K♠.',''],
   ['End of the game','After round 6, the lowest total wins.','']]}
  return []}
-function rulesV(){const k=S.rules,d=(S.game&&S.game.key===k&&S.view==='board')?gdef(S.game):GAMES[k];document.documentElement.dataset.game=k;
+function rulesV(){const k=S.rules,d=(S.game&&S.game.key===k&&S.tab==='scores')?gdef(S.game):GAMES[k];document.documentElement.dataset.game=k;
  return `<div class="sheet${S.anim?' anim':''}"><div class="top"><div class="bar" style="margin:0"><button class="icon" data-a="rclose" aria-label="Close">${X}</button><h1>${esc(d.name)} rules</h1><span class="ghost"></span></div></div><div class="mid">${rulesFor(k).map(([h,b,x])=>`<div class="card rsec"><h3>${h}</h3>${b?`<p>${b}</p>`:''}${x}</div>`).join('')}</div></div>`}
 
 /* ---------- end screen ---------- */
@@ -789,11 +792,11 @@ function drawChart(){
 
 /* ---------- render with sort animation ---------- */
 function render(){
- const vk=S.tab+'|'+(S.tab==='scores'?S.view:''),pv=S._vk;let ec='';
- if(pv&&pv!==vk){const TI={scores:0,timer:1,dice:2},VI={home:0,setup:1,board:2};const[a1,b1]=pv.split('|'),[a2,b2]=vk.split('|');const dd=a1!==a2?TI[a2]-TI[a1]:(VI[b2]??0)-(VI[b1]??0);ec=dd>0?'enter-r':dd<0?'enter-l':'enter'}else if(!pv)ec='enter';
+ const vk=S.tab+'|'+(S.tab==='games'?S.view:''),pv=S._vk;let ec='';
+ if(pv&&pv!==vk){const TI={games:0,scores:1,timer:2,dice:3},VI={home:0,setup:1};const[a1,b1]=pv.split('|'),[a2,b2]=vk.split('|');const dd=a1!==a2?TI[a2]-TI[a1]:(VI[b2]??0)-(VI[b1]??0);ec=dd>0?'enter-r':dd<0?'enter-l':'enter'}else if(!pv)ec='enter';
  S._navPop=pv&&pv.split('|')[0]!==S.tab;S._vk=vk;
  const before={};app.querySelectorAll('[data-row]').forEach(el=>{const r=el.getBoundingClientRect();before[el.dataset.row]=[r.left,r.top]});
- let h;if(S.tab==='timer'){h=timerV();document.documentElement.dataset.game=S.game?S.game.key:'generic'}else if(S.tab==='dice'){h=diceV();document.documentElement.dataset.game=S.game?S.game.key:'generic'}else h=S.view==='home'?home():S.view==='setup'?setup():boardV();
+ let h;if(S.tab==='timer'){h=timerV();document.documentElement.dataset.game=S.game?S.game.key:'generic'}else if(S.tab==='dice'){h=diceV();document.documentElement.dataset.game=S.game?S.game.key:'generic'}else if(S.tab==='games')h=S.view==='setup'&&S.setup?setup():home();else h=S.game?boardV():noGameV();
  h+=navV();
  if(S.draft)h+=sheetV();if(S.rules)h+=rulesV();if(S.pmOpen&&S.game&&S.tab==='scores')h+=pmV();if(S.modal)h+=modalV();h+=toastV();
  const om=app.querySelector('.sheet .mid'),st=om?om.scrollTop:0,keepScroll=!!om&&!S.anim;
@@ -801,24 +804,25 @@ function render(){
  const ghosts=[];if(!RM){const os=app.querySelector('.sheet:not(.closing)');if(os&&!(S.draft||S.rules||(S.pmOpen&&S.tab==='scores')))ghosts.push(os);const oc=app.querySelector('.scrim:not(.closing)');if(oc&&!S.modal)ghosts.push(oc)}
  app.innerHTML=h;S.anim=false;drawChart();
  if(ec){const w=app.querySelector('.wrap');if(w)w.classList.add(ec);const dk=app.querySelector('.dock');if(dk)dk.classList.add('enter')}
+ if(S.modal&&S.modal===S._lastModal){const sc=app.querySelector('.scrim:not(.closing)');if(sc)sc.classList.add('still')}S._lastModal=S.modal;
  ghosts.forEach(gh=>{gh.classList.add('closing');app.appendChild(gh);setTimeout(()=>gh.remove(),260)});
- if(S.game&&S.tab==='scores'&&S.view==='board'){const g=S.game,T=totals(g),prev=S._tots&&S._tots.id===g.id?S._tots.t:null;
+ if(S.game&&S.tab==='scores'){const g=S.game,T=totals(g),prev=S._tots&&S._tots.id===g.id?S._tots.t:null;
   if(prev&&!RM&&!S.draft)for(const id in T){if(prev[id]==null||prev[id]===T[id])continue;const row=app.querySelector(`.lb [data-row="${id}"]`);if(!row)continue;const tt=row.querySelector('.tot');if(tt)tt.classList.add('bump');const dv=T[id]-prev[id],f=document.createElement('span');f.className='delta';f.style.color=(gdef(g).low?dv>0:dv<0)?'#ff8a8a':'#3fcf8e';f.textContent=(dv>0?'+':'−')+Math.abs(dv).toLocaleString();row.appendChild(f)}
   S._tots={id:g.id,t:T};const rk=ranked(g),ld=rk.filter(x=>x.rank===1);S._leader=g.rounds.length&&ld.length===1?ld[0].p.id:null;
   const ek=g.id+':'+g.rounds.length;if(app.querySelector('.podium')&&S._conf!==ek){S._conf=ek;if(!RM)confetti(g.players.map(p=>p.color))}}
  const nm=app.querySelector('.sheet .mid');if(nm){if(keepScroll)nm.scrollTop=st;const on=nm.querySelector('.row.on');if(on&&S.draft&&S.draft.active!==S._lastAct){const r=on.getBoundingClientRect(),b=nm.getBoundingClientRect();if(r.top<b.top)nm.scrollTop-=b.top-r.top+8;else if(r.bottom>b.bottom)nm.scrollTop+=r.bottom-b.bottom+8}}S._lastAct=S.draft?S.draft.active:null;
  const act=app.querySelector('.pchips .chip.on');if(act)act.scrollIntoView({block:'nearest',inline:'nearest'});
- if(S.tab==='scores'&&S.view==='board'&&!S.draft&&!S.rules&&!S.pmOpen&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+ if(S.tab==='scores'&&S.game&&!S.draft&&!S.rules&&!S.pmOpen&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
   app.querySelectorAll('[data-row]').forEach(el=>{const b=before[el.dataset.row];if(b==null)return;const r=el.getBoundingClientRect(),dx=b[0]-r.left,dy=b[1]-r.top;if(Math.abs(dy)<1&&Math.abs(dx)<1)return;el.style.transition='none';el.style.transform=`translate(${dx}px,${dy}px)`;el.getBoundingClientRect();el.style.transition='transform .5s cubic-bezier(.2,.8,.2,1)';el.style.transform=''})}}
 
 /* ---------- actions ---------- */
 function lateJoin(id,start){const g=S.game,p=clone(S.players.find(x=>x.id===id));const used=new Set(g.players.map(x=>x.color));if(used.has(p.color))p.color=PAL.find(c=>!used.has(c))||p.color;g.players.push(p);if(start)(g.adjs=g.adjs||[]).push({pid:p.id,v:start,r:g.rounds.length});persist();toast(`${p.name} joined`,null)}
 function startTeams(sel,n,map,cf){
  const teams=[...Array(n).keys()].map(t=>{const mem=sel.filter(id=>map[id]===t).map(id=>S.players.find(p=>p.id===id)).filter(Boolean);return {id:'team'+t+uid(),name:mem.map(p=>p.name).join(' & ').slice(0,40)||'Team '+'ABCD'[t],color:TEAMC[t],members:mem.map(p=>p.name)}});
- S.game={key:'generic',id:uid(),players:teams,rounds:[],adjs:[],dismissed:-1,startOff:1,cfg:cf||{},teamSetup:{sel,n,map}};S.lineups.generic=sel.slice();S.view='board';S.setup=null;S.draft=null;S.modal=null;S.peek=false;S.rolloff=null;S.tiePick=false;persist()}
+ S.game={key:'generic',id:uid(),players:teams,rounds:[],adjs:[],dismissed:-1,startOff:1,cfg:cf||{},teamSetup:{sel,n,map}};S.lineups.generic=sel.slice();S.tab='scores';S.view='home';S.setup=null;S.draft=null;S.modal=null;S.peek=false;S.rolloff=null;S.tiePick=false;persist()}
 function startGame(key,ids,brutal,cfg){
  const used=new Set();const players=ids.map(id=>{const p=clone(S.players.find(x=>x.id===id));if(used.has(p.color))p.color=PAL.find(c=>!used.has(c))||p.color;used.add(p.color);return p});
- S.game={key,id:uid(),players,rounds:[],adjs:[],dismissed:-1,startOff:GAMES[key].fixedStart?0:1,brutal:!!brutal,cfg:cfg||{}};S.rolloff=null;S.tiePick=false;S.lineups[key]=ids.slice();S.view='board';S.setup=null;S.draft=null;S.modal=null;S.peek=false;persist()}
+ S.game={key,id:uid(),players,rounds:[],adjs:[],dismissed:-1,startOff:GAMES[key].fixedStart?0:1,brutal:!!brutal,cfg:cfg||{}};S.rolloff=null;S.tiePick=false;S.lineups[key]=ids.slice();S.tab='scores';S.view='home';S.setup=null;S.draft=null;S.modal=null;S.peek=false;persist()}
 function saveDraft(){const g=S.game,d=S.draft,ev=evaluate(rg(),d);const det=clone(d);const rec={scores:ev.scores,detail:det,doubled:ev.doubled};if(g.key==='phase10'){rec.made={};(d.ids||g.players.map(p=>p.id)).forEach(id=>{if(d.made[id])rec.made[id]=true})}const editing=d.i<g.rounds.length,prev=editing?g.rounds[d.i]:null;
  if(editing)g.rounds[d.i]=rec;else{g.rounds.push(rec);fkFinalCheck(g,d)}S.draft=null;S.peek=false;persist();
  const over=isOver(g)&&g.dismissed!==g.rounds.length;sfx(over?'win':'save');
@@ -870,7 +874,7 @@ const A={
  fkclr:()=>{const d=S.draft;d.p[d.active]=fkBlank()},
  reorder:()=>{S.reorder=!S.reorder},
  pick:t=>{const k=t.dataset.k;S.setup={key:k,sel:[],cfg:CFG0[k]?Object.assign(clone(CFG0[k]),S.cfgs[k]||{},k==='generic'?{endBy:'open'}:{}):null};S.edit=false;S.view='setup'},
- resume:()=>{S.view='board'},
+ resume:()=>{S.tab='scores'},
  home:()=>{S.view='home';S.setup=null},
  same:()=>{const d=GAMES[S.setup.key];S.setup.sel=(S.lineups[S.setup.key]||[]).filter(id=>S.players.some(p=>p.id===id)).slice(0,d.max)},
  sel:t=>{if(S.setup.sel.length<GAMES[S.setup.key].max)S.setup.sel.push(t.dataset.id)},
@@ -898,7 +902,7 @@ const A={
  unpeek:()=>{S.peek=false},
  rules:t=>{S.rules=t.dataset.k;S.anim=true},
  rclose:()=>{S.rules=null},
- endgame:()=>{S.modal={title:'End this game?',body:'Scores for this game will be cleared. Saved players stay.',ok:'End game',run:()=>{S.game=null;S.view='home';persist()}}},
+ endgame:()=>{S.modal={title:'End this game?',body:'Scores for this game will be cleared. Saved players stay.',ok:'End game',run:()=>{S.game=null;S.view='home';S.tab='games';persist()}}},
  tab:t=>{S.draft.tab=t.dataset.t},
  act:t=>{S.draft.active=t.dataset.id;S.padMin=false},
  padmin:()=>{S.padMin=!S.padMin},
@@ -980,7 +984,7 @@ Object.assign(A,{
  treset:()=>{TM.running=false;TM.rem=TM.dur;TM.sw=0;TM.done=false;TM.turn=0},
  tnext:()=>{ensureAudio();TM.turn++;TM.rem=TM.dur;TM.endAt=Date.now()+TM.dur*1000;TM.running=true;TM.done=false},
  sound:()=>{S.prefs.sound=!S.prefs.sound;LS.set('prefs',S.prefs);if(S.prefs.sound){ensureAudio();sfx('save')}},
- navtab:t=>{S.tab=t.dataset.v;window.scrollTo(0,0)}});
+ navtab:t=>{const v=t.dataset.v;if(v==='games'&&S.tab==='games'){S.view='home';S.setup=null;S.reorder=false}S.tab=v;window.scrollTo(0,0)}});
 
 /* ---------- dice ---------- */
 const DC=S.dice=Object.assign({sides:6,count:2,vals:[],held:[],hist:[]},LS.get('dice',{}),{rolling:false});
@@ -1020,7 +1024,7 @@ Object.assign(A,{
    DC.hist.unshift({l:dLabel(DC.count,DC.sides),v:coin?fin.map(v=>v===1?'H':'T').join(' '):(DC.count>1?fin.join(' + ')+' =':''),t:coin?(DC.count===1?(heads?'Heads':'Tails'):heads+'H '+(DC.count-heads)+'T'):String(fin.reduce((a,b)=>a+b,0))});DC.hist=DC.hist.slice(0,8);saveDC();render()};
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){done();return}
   DC.rolling=true;let k=0;const step=()=>{DC.vals=fin.map((v,i)=>keep[i]&&DC.vals[i]?DC.vals[i]:rnd(DC.sides));render();if(++k<8)setTimeout(step,55);else done()};step()}});
-const navV=()=>`<nav class="nav">${[['scores','Scores',IC_SC],['timer','Timer',IC_TM],['dice','Dice',IC_DC]].map(([k,l,ic])=>`<button class="${S.tab===k?'on':''}${S.tab===k&&S._navPop?' pop':''}" data-a="navtab" data-v="${k}">${ic}${l}</button>`).join('')}</nav>`;
+const navV=()=>`<nav class="nav">${[['games','Games',IC_GM],['scores','Score',IC_SC],['timer','Timer',IC_TM],['dice','Dice',IC_DC]].map(([k,l,ic])=>`<button class="${S.tab===k?'on':''}${S.tab===k&&S._navPop?' pop':''}" data-a="navtab" data-v="${k}">${ic}${l}</button>`).join('')}</nav>`;
 
 let drag=null,press=null,eatClick=false;
 app.addEventListener('pointerdown',e=>{const tile=e.target.closest('#tiles .tile');if(!tile)return;
