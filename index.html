@@ -32,8 +32,9 @@
 [data-game=generic]{--ac:#c9d3e3;--ac2:#56627a;--glow:rgba(180,195,220,.10);--acink:#0b0f16}
 [data-game=chili]{--ac:#ff7a4d;--ac2:#3f9b72;--glow:rgba(255,95,55,.17);--acink:#2a0b00}
 *{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
-html{min-height:calc(100% + env(safe-area-inset-top))}
-body{min-height:100vh;min-height:100lvh}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+#app{position:fixed;top:0;left:0;right:0;height:var(--apph,100vh);display:flex;flex-direction:column;overflow:hidden}
+.scroller{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
 body{margin:0;background:radial-gradient(120% 60% at 50% -10%,var(--glow),transparent 60%) fixed,var(--bg);color:var(--ink);font:16px/1.45 Figtree,system-ui,-apple-system,sans-serif;overflow-x:clip;font-variant-numeric:tabular-nums;-webkit-user-select:none;user-select:none}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation}
 button:focus-visible,input:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
@@ -249,8 +250,10 @@ h2{font-size:14px;font-weight:700;color:var(--mute);margin:22px 4px 10px;display
 .nav{position:fixed;left:0;right:0;bottom:0;z-index:10;transform:translateZ(0);background:rgba(11,13,18,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;justify-content:center;padding:4px 8px env(safe-area-inset-bottom)}
 .nav button{flex:1;max-width:170px;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:12px;font-weight:700;color:var(--mute)}
 .nav button.on{color:var(--ac)}.nav svg{width:24px;height:24px}
-.dock{bottom:var(--navh)!important;padding-bottom:12px!important}
-.wrap{padding-bottom:calc(var(--navh) + 110px)}
+.dock{position:absolute!important;bottom:var(--navh)!important;padding-bottom:12px!important}
+.wrap{padding-bottom:120px}
+#app>.sheet,#app>.scrim,#app>.toast{position:absolute}
+.nav{position:relative!important;flex:none;transform:none!important}
 .tring{position:relative;width:min(78vw,300px);aspect-ratio:1;margin:18px auto 10px}
 .tring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
 .tring .face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center}
@@ -415,7 +418,7 @@ const FLAG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wi
 const X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>';
 const BACK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
 const DOTS='<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
-const APP_VERSION='v1.2.1';
+const APP_VERSION='v1.2.2';
 const DEL='⌫';
 const GRIP='<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.8"/><circle cx="15" cy="6" r="1.8"/><circle cx="9" cy="12" r="1.8"/><circle cx="15" cy="12" r="1.8"/><circle cx="9" cy="18" r="1.8"/><circle cx="15" cy="18" r="1.8"/></svg>';
 const gameKeys=()=>{const all=Object.keys(GAMES),o=(S.order||[]).filter(k=>all.includes(k));return o.concat(all.filter(k=>!o.includes(k)))};
@@ -438,6 +441,8 @@ const S={tab:'games',prefs:Object.assign({sound:true},LS.get('prefs',{})),toast:
 if(S.game)S.tab='scores';
 const persist=()=>{LS.set('players',S.players);LS.set('lineups',S.lineups);LS.set('game',S.game)};
 const app=document.getElementById('app');
+const setH=()=>{let h=window.innerHeight;if(navigator.standalone){const sh=matchMedia('(orientation: portrait)').matches?screen.height:screen.width;if(sh>h&&sh-h<80)h=sh}document.documentElement.style.setProperty('--apph',h+'px')};setH();addEventListener('resize',setH);addEventListener('orientationchange',()=>setTimeout(setH,300));
+document.addEventListener('focusout',()=>setTimeout(()=>{window.scrollTo(0,0);setH()},60));
 
 /* ---------- scoring core ---------- */
 const totals=g=>{const t={};g.players.forEach(p=>t[p.id]=0);g.rounds.forEach(r=>{for(const id in r.scores)if(id in t)t[id]+=r.scores[id]});(g.adjs||[]).forEach(a=>{if(a.pid in t)t[a.pid]+=a.v});return t};
@@ -797,12 +802,13 @@ function render(){
  S._navPop=pv&&pv.split('|')[0]!==S.tab;S._vk=vk;
  const before={};app.querySelectorAll('[data-row]').forEach(el=>{const r=el.getBoundingClientRect();before[el.dataset.row]=[r.left,r.top]});
  let h;if(S.tab==='timer'){h=timerV();document.documentElement.dataset.game=S.game?S.game.key:'generic'}else if(S.tab==='dice'){h=diceV();document.documentElement.dataset.game=S.game?S.game.key:'generic'}else if(S.tab==='games')h=S.view==='setup'&&S.setup?setup():home();else h=S.game?boardV():noGameV();
- h+=navV();
+ h=`<div class="scroller">${h}</div>`+navV();
  if(S.draft)h+=sheetV();if(S.rules)h+=rulesV();if(S.pmOpen&&S.game&&S.tab==='scores')h+=pmV();if(S.modal)h+=modalV();h+=toastV();
  const om=app.querySelector('.sheet .mid'),st=om?om.scrollTop:0,keepScroll=!!om&&!S.anim;
  const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
  const ghosts=[];if(!RM){const os=app.querySelector('.sheet:not(.closing)');if(os&&!(S.draft||S.rules||(S.pmOpen&&S.tab==='scores')))ghosts.push(os);const oc=app.querySelector('.scrim:not(.closing)');if(oc&&!S.modal)ghosts.push(oc)}
- app.innerHTML=h;S.anim=false;drawChart();
+ const osc=app.querySelector('.scroller'),ost=osc?osc.scrollTop:0;
+ app.innerHTML=h;S.anim=false;if(pv===vk){const nsc=app.querySelector('.scroller');if(nsc)nsc.scrollTop=ost}drawChart();
  if(ec){const w=app.querySelector('.wrap');if(w)w.classList.add(ec);const dk=app.querySelector('.dock');if(dk)dk.classList.add('enter')}
  if(S.modal&&S.modal===S._lastModal){const sc=app.querySelector('.scrim:not(.closing)');if(sc)sc.classList.add('still')}S._lastModal=S.modal;
  ghosts.forEach(gh=>{gh.classList.add('closing');app.appendChild(gh);setTimeout(()=>gh.remove(),260)});
@@ -984,7 +990,7 @@ Object.assign(A,{
  treset:()=>{TM.running=false;TM.rem=TM.dur;TM.sw=0;TM.done=false;TM.turn=0},
  tnext:()=>{ensureAudio();TM.turn++;TM.rem=TM.dur;TM.endAt=Date.now()+TM.dur*1000;TM.running=true;TM.done=false},
  sound:()=>{S.prefs.sound=!S.prefs.sound;LS.set('prefs',S.prefs);if(S.prefs.sound){ensureAudio();sfx('save')}},
- navtab:t=>{const v=t.dataset.v;if(v==='games'&&S.tab==='games'){S.view='home';S.setup=null;S.reorder=false}S.tab=v;window.scrollTo(0,0)}});
+ navtab:t=>{const v=t.dataset.v;if(v==='games'&&S.tab==='games'){S.view='home';S.setup=null;S.reorder=false}S.tab=v}});
 
 /* ---------- dice ---------- */
 const DC=S.dice=Object.assign({sides:6,count:2,vals:[],held:[],hist:[]},LS.get('dice',{}),{rolling:false});
