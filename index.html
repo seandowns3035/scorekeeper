@@ -32,7 +32,8 @@
 [data-game=generic]{--ac:#c9d3e3;--ac2:#56627a;--glow:rgba(180,195,220,.10);--acink:#0b0f16}
 [data-game=chili]{--ac:#ff7a4d;--ac2:#3f9b72;--glow:rgba(255,95,55,.17);--acink:#2a0b00}
 *{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
+html{min-height:calc(100% + env(safe-area-inset-top))}
+body{min-height:100vh;min-height:100lvh}
 body{margin:0;background:radial-gradient(120% 60% at 50% -10%,var(--glow),transparent 60%) fixed,var(--bg);color:var(--ink);font:16px/1.45 Figtree,system-ui,-apple-system,sans-serif;overflow-x:clip;font-variant-numeric:tabular-nums;-webkit-user-select:none;user-select:none}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation}
 button:focus-visible,input:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
@@ -245,7 +246,7 @@ h2{font-size:14px;font-weight:700;color:var(--mute);margin:22px 4px 10px;display
 
 /* nav + tools */
 :root{--navh:calc(64px + env(safe-area-inset-bottom))}
-.nav{position:fixed;left:0;right:0;bottom:0;z-index:10;background:rgba(11,13,18,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;justify-content:center;padding:4px 8px env(safe-area-inset-bottom)}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:10;transform:translateZ(0);background:rgba(11,13,18,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;justify-content:center;padding:4px 8px env(safe-area-inset-bottom)}
 .nav button{flex:1;max-width:170px;min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:12px;font-weight:700;color:var(--mute)}
 .nav button.on{color:var(--ac)}.nav svg{width:24px;height:24px}
 .dock{bottom:var(--navh)!important;padding-bottom:12px!important}
@@ -380,7 +381,7 @@ const FLAG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wi
 const X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>';
 const BACK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
 const DOTS='<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
-const APP_VERSION='v1.0';
+const APP_VERSION='v1.0.1';
 const DEL='⌫';
 const GRIP='<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.8"/><circle cx="15" cy="6" r="1.8"/><circle cx="9" cy="12" r="1.8"/><circle cx="15" cy="12" r="1.8"/><circle cx="9" cy="18" r="1.8"/><circle cx="15" cy="18" r="1.8"/></svg>';
 const gameKeys=()=>{const all=Object.keys(GAMES),o=(S.order||[]).filter(k=>all.includes(k));return o.concat(all.filter(k=>!o.includes(k)))};
