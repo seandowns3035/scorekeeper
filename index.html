@@ -325,6 +325,40 @@ input.ren:focus{outline:none;border-bottom-color:var(--ac)}
 .teamchip{width:34px;height:34px;border-radius:50%;font-weight:900;color:#0b0d12;flex:none;font-size:15px}
 .ver{text-align:center;color:var(--line);font-size:13px;margin:24px 0 0}
 html{-webkit-text-size-adjust:100%}body{overscroll-behavior-y:none}
+
+/* ---------- feel ---------- */
+button,.chip,.row,.key,.tile,.slot,.n7,.mod,.die{transition:transform .14s cubic-bezier(.3,.7,.4,1.4),background-color .2s,color .2s,box-shadow .2s,opacity .2s}
+.row.on{transition:background-color .25s,box-shadow .25s}
+@media (prefers-reduced-motion:no-preference){
+ button:active:not([disabled]),.chip:active{transform:scale(.95)}
+ .key:active:not([disabled]),.slot:active,.n7:active,.mod:active{transform:scale(.9)}
+ .tile:active{transform:scale(.97)}
+ .lb .row:active{background-color:var(--panel2)}
+ .enter-r{animation:inR .32s cubic-bezier(.2,.8,.2,1) backwards}.enter-l{animation:inL .32s cubic-bezier(.2,.8,.2,1) backwards}.enter{animation:inU .32s cubic-bezier(.2,.8,.2,1) backwards}
+ .enter .tile,.enter-l .tile,.enter-r .tile{animation:inU .42s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--i)*45ms)}
+ .enter .lb .row,.enter-r .lb .row{animation:inU .4s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--i)*40ms)}
+ .sheet.closing{animation:outD .2s ease-in forwards;pointer-events:none}
+ .scrim.closing{animation:fadeO .18s ease-in forwards;pointer-events:none}.scrim.closing .modal{animation:outD .18s ease-in forwards}
+ .scrim{animation:fadeI .18s ease-out}
+ .tot.bump{animation:bump .55s cubic-bezier(.3,1.6,.5,1)}
+ .delta{position:absolute;right:16px;top:6px;font-weight:900;font-size:16px;pointer-events:none;animation:floatUp 1.3s ease-out forwards}
+ .nav button.pop svg{animation:pop .4s cubic-bezier(.3,1.8,.5,1)}
+ .lcrown{display:inline-block;width:16px;height:16px;color:var(--ac);margin-left:6px;vertical-align:-1px}
+ .lcrown.new{animation:crown .7s cubic-bezier(.3,1.8,.5,1)}
+ .die.rolling{animation:tumble .22s linear infinite}.die.rolling:nth-child(2n){animation-duration:.18s;animation-direction:reverse}.die.rolling:nth-child(3n){animation-duration:.26s}
+ .dtotal b{animation:bump .45s cubic-bezier(.3,1.6,.5,1)}
+ .tring.urgent .face b{animation:beat 1s ease-in-out infinite}.tring.urgent #tarc{stroke:var(--bad)}
+}
+@keyframes inR{from{opacity:0;transform:translateX(28px)}}@keyframes inL{from{opacity:0;transform:translateX(-28px)}}@keyframes inU{from{opacity:0;transform:translateY(14px)}}
+@keyframes outD{to{opacity:0;transform:translateY(40px)}}@keyframes fadeO{to{opacity:0}}@keyframes fadeI{from{opacity:0}}
+@keyframes bump{0%{transform:scale(1)}35%{transform:scale(1.22)}100%{transform:scale(1)}}
+@keyframes floatUp{0%{opacity:0;transform:translateY(8px)}15%{opacity:1}100%{opacity:0;transform:translateY(-26px)}}
+@keyframes pop{0%{transform:scale(.7)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes crown{0%{transform:scale(0) rotate(-30deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes tumble{0%{transform:rotate(0) translateY(0)}25%{transform:rotate(12deg) translateY(-6px)}50%{transform:rotate(-8deg) translateY(2px)}75%{transform:rotate(6deg) translateY(-4px)}100%{transform:rotate(0)}}
+@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes glow{from{box-shadow:inset 0 0 0 2px var(--ac),0 0 0 6px color-mix(in srgb,var(--ac) 25%,transparent)}}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
 /* modal */
 .scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:40;display:flex;align-items:flex-end;justify-content:center;padding:16px 16px calc(env(safe-area-inset-bottom) + 16px)}
 .modal{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:20px;width:100%;max-width:480px}.modal.anim{animation:up .2s}
@@ -381,7 +415,7 @@ const FLAG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wi
 const X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>';
 const BACK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
 const DOTS='<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
-const APP_VERSION='v1.0.1';
+const APP_VERSION='v1.1';
 const DEL='⌫';
 const GRIP='<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.8"/><circle cx="15" cy="6" r="1.8"/><circle cx="9" cy="12" r="1.8"/><circle cx="15" cy="12" r="1.8"/><circle cx="9" cy="18" r="1.8"/><circle cx="15" cy="18" r="1.8"/></svg>';
 const gameKeys=()=>{const all=Object.keys(GAMES),o=(S.order||[]).filter(k=>all.includes(k));return o.concat(all.filter(k=>!o.includes(k)))};
@@ -472,7 +506,7 @@ function home(){
  else h+=`<h2><span>Games</span></h2>`;
  h=h.replace(/<h2>(?:<span>)?(Start something new|Games)(?:<\/span>)?<\/h2>$/,(m,t)=>`<h2><span>${t}</span><button class="sortbtn" data-a="reorder">${S.reorder?'Done':'Reorder'}</button></h2>`);
  if(S.reorder)h+=`<p class="hint" style="margin:-4px 4px 10px">Drag a tile to move it. Tap Done when you're finished.</p>`;
- h+=`<div class="tiles${S.reorder?' editing':''}" id="tiles">${gameKeys().map(k=>[k,GAMES[k]]).map(([k,d])=>`<button class="tile t-${k}" ${S.reorder?'':'data-a="pick"'} data-k="${k}">${S.reorder?`<span class="grip">${GRIP}</span>`:''}${ART[k]}<b>${d.name}</b><small>${d.tag} · ${d.min}–${d.max}</small></button>`).join('')}</div><p class="ver">Scorekeeper ${APP_VERSION}</p></div>`;
+ h+=`<div class="tiles${S.reorder?' editing':''}" id="tiles">${gameKeys().map(k=>[k,GAMES[k]]).map(([k,d])=>`<button class="tile t-${k}" style="--i:${gameKeys().indexOf(k)}" ${S.reorder?'':'data-a="pick"'} data-k="${k}">${S.reorder?`<span class="grip">${GRIP}</span>`:''}${ART[k]}<b>${d.name}</b><small>${d.tag} · ${d.min}–${d.max}</small></button>`).join('')}</div><p class="ver">Scorekeeper ${APP_VERSION}</p></div>`;
  return h}
 
 function setup(){
@@ -511,8 +545,8 @@ function boardV(){
  if(showWin)h+=`<div class="card endnote">${CROWN}<span>Game over</span><button class="btn sm" data-a="unpeek">See results</button></div>`;
  else{const sub=roundSub(g,n);const dl=dealer(g,n),st=starter(g,n),fin=g.key==='farkle'&&g.finalAt!=null&&n===g.finalAt;h+=`<div class="status"><b>${fin?'Final turns':d.rounds&&n>=d.rounds?'Final':roundTitle(g,n)}</b><button class="stbtn" data-a="whofirst">${fin?`${esc(nameOf(g,g.trig))} hit ${d.target.toLocaleString()}<br>`:sub?esc(sub)+'<br>':''}${fin?`Last turn${g.finalIds.length>1?'s':''}: <b>${g.finalIds.map(id=>esc(nameOf(g,id))).join(', ')}</b>`:d.fixedStart?`<b>${esc(st.name)}</b> rolls first ›`:g.teamSetup?`<b>${esc(st.name)}</b> first ›`:`${esc(dl.name)} deals · <b>${esc(st.name)}</b> first ›`}</button></div>`}
  h+=`<h2><span>${g.key==='phase10'?'Most phases, then fewest points':`${d.low?'Lowest':'Highest'} score leads${d.target?' · ends at '+d.target.toLocaleString():d.rounds?'':' · no end set'}`}</span><button class="sortbtn" data-a="seat">${S.seat?'Sort by score':'Seat order'}</button></h2>`;
- h+=`<div class="card lb">${list.map(x=>{const last=n?g.rounds[n-1].scores[x.p.id]:null;const lead=n&&x.rank===1;const pct=d.target?Math.max(0,Math.min(100,x.t/d.target*100)):0;
-  return `<div class="row${lead?' lead':''}" data-row="${x.p.id}" data-a="adj" data-id="${x.p.id}" role="button" tabindex="0"><span class="rk">${n?x.rank:''}</span>${dotH(x.p.color)}<span class="nm">${esc(x.p.name)}${g.key==='phase10'?`<span class="sub">${x.m>=10?'All 10 phases done ✓':`Phase ${x.m+1} · ${PHASES[x.m]}`}</span>`:last!=null?`<span class="sub">${last>0?'+':''}${last} last round</span>`:''}${x.p.members&&x.p.name!==x.p.members.join(' & ')?`<span class="sub">${esc(x.p.members.join(', '))}</span>`:''}</span><span class="tot">${x.t}${adjOf(g,x.p.id)?'<span class="adjmark">±</span>':''}</span>${d.target&&n?`<span class="prog"><i style="width:${pct}%"></i></span>`:''}</div>`}).join('')}</div>`;
+ h+=`<div class="card lb">${list.map((x,xi)=>{const last=n?g.rounds[n-1].scores[x.p.id]:null;const lead=n&&x.rank===1;const pct=d.target?Math.max(0,Math.min(100,x.t/d.target*100)):0;
+  return `<div class="row${lead?' lead':''}" style="--i:${xi}" data-row="${x.p.id}" data-a="adj" data-id="${x.p.id}" role="button" tabindex="0"><span class="rk">${n?x.rank:''}</span>${dotH(x.p.color)}<span class="nm">${esc(x.p.name)}${lead&&list.filter(y=>y.rank===1).length===1?`<span class="lcrown${S._leader!==x.p.id?' new':''}">${CROWN.replace('class="crown"','')}</span>`:''}${g.key==='phase10'?`<span class="sub">${x.m>=10?'All 10 phases done ✓':`Phase ${x.m+1} · ${PHASES[x.m]}`}</span>`:last!=null?`<span class="sub">${last>0?'+':''}${last} last round</span>`:''}${x.p.members&&x.p.name!==x.p.members.join(' & ')?`<span class="sub">${esc(x.p.members.join(', '))}</span>`:''}</span><span class="tot">${x.t}${adjOf(g,x.p.id)?'<span class="adjmark">±</span>':''}</span>${d.target&&n?`<span class="prog"><i style="width:${pct}%"></i></span>`:''}</div>`}).join('')}</div>`;
  if(n){h+=`<h2><span>Rounds · tap to fix one</span></h2><div class="card hist"><table><thead><tr><th>#</th>${g.players.map(p=>`<th>${esc(p.name)}</th>`).join('')}</tr></thead><tbody>${g.rounds.map((r,i)=>`<tr class="tap" data-a="edit" data-i="${i}"><td>${g.key==='chili'?CH[i+1].n:i+1}</td>${g.players.map(p=>`<td>${r.scores[p.id]??''}${r.doubled===p.id?'<span class="dbl">×2</span>':''}${r.made&&r.made[p.id]?'<span class="dbl" style="color:var(--ac)">✓</span>':''}</td>`).join('')}</tr>`).join('')}${(g.adjs||[]).length?`<tr><td>±</td>${g.players.map(p=>{const v=adjOf(g,p.id);return `<td>${v?(v>0?'+':'−')+Math.abs(v):''}</td>`}).join('')}</tr>`:''}</tbody></table></div><p class="hint">Tap a player above to change their total.</p>`}
  else h+=`<p class="hint">Tap a player to change their total.</p>`;
  h+='</div>';
@@ -732,6 +766,9 @@ function startRolloff(){const g=S.game;let alive=ranked(g).filter(x=>x.rank===1)
    S.rolloff.out=S.rolloff.out.concat(alive.filter(id=>!win.includes(id)));
    if(win.length===1){S.rolloff.msg=`${esc(g.players.find(p=>p.id===win[0]).name)} rolls highest!`;render();sfx('win');setTimeout(()=>{g.tieWinner=win[0];S.rolloff=null;persist();render()},1400)}
    else{alive=win;S.rolloff.msg='Still tied — rolling again…';render();setTimeout(go,900)}};spin()};go()}
+function confetti(cols){const c=document.createElement('canvas');c.className='confetti';const dpr=Math.min(2,devicePixelRatio||1),W=innerWidth,H=innerHeight;c.width=W*dpr;c.height=H*dpr;document.body.appendChild(c);const x=c.getContext('2d');x.scale(dpr,dpr);
+ const P=Array.from({length:110},()=>({x:W/2+(Math.random()-.5)*60,y:H*.32,vx:(Math.random()-.5)*11,vy:-Math.random()*12-4,r:Math.random()*Math.PI,vr:(Math.random()-.5)*.35,w:6+Math.random()*6,h:8+Math.random()*8,c:cols[Math.floor(Math.random()*cols.length)]||'#fff'}));
+ const t0=performance.now();const fr=t=>{const k=(t-t0)/1000;x.clearRect(0,0,W,H);P.forEach(p=>{p.vy+=.32;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;x.save();x.globalAlpha=Math.max(0,1-k/2.4);x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.w/2,-p.h/2,p.w,p.h*Math.abs(Math.cos(p.r*2)));x.restore()});if(k<2.4)requestAnimationFrame(fr);else c.remove()};requestAnimationFrame(fr)}
 let chartRO=null;
 function drawChart(){
  if(chartRO){chartRO.disconnect();chartRO=null}
@@ -752,12 +789,23 @@ function drawChart(){
 
 /* ---------- render with sort animation ---------- */
 function render(){
+ const vk=S.tab+'|'+(S.tab==='scores'?S.view:''),pv=S._vk;let ec='';
+ if(pv&&pv!==vk){const TI={scores:0,timer:1,dice:2},VI={home:0,setup:1,board:2};const[a1,b1]=pv.split('|'),[a2,b2]=vk.split('|');const dd=a1!==a2?TI[a2]-TI[a1]:(VI[b2]??0)-(VI[b1]??0);ec=dd>0?'enter-r':dd<0?'enter-l':'enter'}else if(!pv)ec='enter';
+ S._navPop=pv&&pv.split('|')[0]!==S.tab;S._vk=vk;
  const before={};app.querySelectorAll('[data-row]').forEach(el=>{const r=el.getBoundingClientRect();before[el.dataset.row]=[r.left,r.top]});
  let h;if(S.tab==='timer'){h=timerV();document.documentElement.dataset.game=S.game?S.game.key:'generic'}else if(S.tab==='dice'){h=diceV();document.documentElement.dataset.game=S.game?S.game.key:'generic'}else h=S.view==='home'?home():S.view==='setup'?setup():boardV();
  h+=navV();
  if(S.draft)h+=sheetV();if(S.rules)h+=rulesV();if(S.pmOpen&&S.game&&S.tab==='scores')h+=pmV();if(S.modal)h+=modalV();h+=toastV();
  const om=app.querySelector('.sheet .mid'),st=om?om.scrollTop:0,keepScroll=!!om&&!S.anim;
+ const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const ghosts=[];if(!RM){const os=app.querySelector('.sheet:not(.closing)');if(os&&!(S.draft||S.rules||(S.pmOpen&&S.tab==='scores')))ghosts.push(os);const oc=app.querySelector('.scrim:not(.closing)');if(oc&&!S.modal)ghosts.push(oc)}
  app.innerHTML=h;S.anim=false;drawChart();
+ if(ec){const w=app.querySelector('.wrap');if(w)w.classList.add(ec);const dk=app.querySelector('.dock');if(dk)dk.classList.add('enter')}
+ ghosts.forEach(gh=>{gh.classList.add('closing');app.appendChild(gh);setTimeout(()=>gh.remove(),260)});
+ if(S.game&&S.tab==='scores'&&S.view==='board'){const g=S.game,T=totals(g),prev=S._tots&&S._tots.id===g.id?S._tots.t:null;
+  if(prev&&!RM&&!S.draft)for(const id in T){if(prev[id]==null||prev[id]===T[id])continue;const row=app.querySelector(`.lb [data-row="${id}"]`);if(!row)continue;const tt=row.querySelector('.tot');if(tt)tt.classList.add('bump');const dv=T[id]-prev[id],f=document.createElement('span');f.className='delta';f.style.color=(gdef(g).low?dv>0:dv<0)?'#ff8a8a':'#3fcf8e';f.textContent=(dv>0?'+':'−')+Math.abs(dv).toLocaleString();row.appendChild(f)}
+  S._tots={id:g.id,t:T};const rk=ranked(g),ld=rk.filter(x=>x.rank===1);S._leader=g.rounds.length&&ld.length===1?ld[0].p.id:null;
+  const ek=g.id+':'+g.rounds.length;if(app.querySelector('.podium')&&S._conf!==ek){S._conf=ek;if(!RM)confetti(g.players.map(p=>p.color))}}
  const nm=app.querySelector('.sheet .mid');if(nm){if(keepScroll)nm.scrollTop=st;const on=nm.querySelector('.row.on');if(on&&S.draft&&S.draft.active!==S._lastAct){const r=on.getBoundingClientRect(),b=nm.getBoundingClientRect();if(r.top<b.top)nm.scrollTop-=b.top-r.top+8;else if(r.bottom>b.bottom)nm.scrollTop+=r.bottom-b.bottom+8}}S._lastAct=S.draft?S.draft.active:null;
  const act=app.querySelector('.pchips .chip.on');if(act)act.scrollIntoView({block:'nearest',inline:'nearest'});
  if(S.tab==='scores'&&S.view==='board'&&!S.draft&&!S.rules&&!S.pmOpen&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
@@ -920,7 +968,7 @@ function tick(){
  if(S.tab!=='timer'||!TM.running)return;
  const d=document.getElementById('tdisp');if(!d)return;
  if(TM.mode==='sw'){d.textContent=fmtS(tEl());return}
- const l=tLeft();d.textContent=fmtC(l);const a=document.getElementById('tarc');if(a)a.setAttribute('stroke-dashoffset',RC*(1-l/TM.dur))}
+ const l=tLeft();d.textContent=fmtC(l);const tr=document.querySelector('.tring');if(tr)tr.classList.toggle('urgent',l<=5&&l>0);const a=document.getElementById('tarc');if(a)a.setAttribute('stroke-dashoffset',RC*(1-l/TM.dur))}
 setInterval(tick,100);
 const saveTM=()=>LS.set('timer',{mode:TM.mode,dur:TM.dur});
 Object.assign(A,{
@@ -952,7 +1000,7 @@ function diceV(){
  <div class="chips" style="justify-content:center">${[[2,'Coin'],[4,'d4'],[6,'d6'],[8,'d8'],[10,'d10'],[12,'d12'],[20,'d20']].map(([v,l])=>`<button class="chip${d.sides===v?' on':''}" data-a="dside" data-v="${v}">${l}</button>`).join('')}</div>
  <div class="cnt"><button class="mini" data-a="dcnt" data-v="-1" aria-label="Fewer">−</button><b>${dLabel(d.count,d.sides)}</b><button class="mini" data-a="dcnt" data-v="1" aria-label="More">+</button></div>
  <div class="presets">${[[6,2,'2d6'],[6,5,'Yahtzee · 5d6'],[20,1,'d20'],[2,1,'Coin flip']].map(([s,c,l])=>`<button class="chip" data-a="dpre" data-s="${s}" data-c="${c}">${l}</button>`).join('')}</div>
- <div class="tray">${Array.from({length:d.count},(_,i)=>`<button class="die${d.held[i]?' held':''}" data-a="dhold" data-i="${i}" aria-label="Die ${i+1}${d.held[i]?', held':''}">${dieSVG(d.sides,d.vals[i])}</button>`).join('')}</div>`;
+ <div class="tray">${Array.from({length:d.count},(_,i)=>`<button class="die${d.held[i]?' held':''}${d.rolling&&!d.held[i]?' rolling':''}" data-a="dhold" data-i="${i}" aria-label="Die ${i+1}${d.held[i]?', held':''}">${dieSVG(d.sides,d.vals[i])}</button>`).join('')}</div>`;
  if(has&&!d.rolling)h+=`<div class="dtotal">${coin?`<b>${d.count===1?(heads?'Heads':'Tails'):heads+' H · '+(d.count-heads)+' T'}</b><span>${d.count===1?'':'heads · tails'}</span>`:`<b>${tot}</b><span>${d.count>1?d.vals.join(' + '):'rolled'}</span>`}</div>`;
  if(has&&d.count>1)h+=`<p class="hint" style="text-align:center">Tap a die to hold it — held dice stay put on the next roll.</p>`;
  if(d.hist.length)h+=`<h2><span>Recent rolls</span><button class="sortbtn" data-a="dclr">Clear</button></h2><div class="card hist2" style="padding:4px 14px">${d.hist.map(r=>`<div><span>${esc(r.l)}</span><span>${esc(r.v)} <b>${esc(r.t)}</b></span></div>`).join('')}</div>`;
@@ -972,7 +1020,7 @@ Object.assign(A,{
    DC.hist.unshift({l:dLabel(DC.count,DC.sides),v:coin?fin.map(v=>v===1?'H':'T').join(' '):(DC.count>1?fin.join(' + ')+' =':''),t:coin?(DC.count===1?(heads?'Heads':'Tails'):heads+'H '+(DC.count-heads)+'T'):String(fin.reduce((a,b)=>a+b,0))});DC.hist=DC.hist.slice(0,8);saveDC();render()};
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){done();return}
   DC.rolling=true;let k=0;const step=()=>{DC.vals=fin.map((v,i)=>keep[i]&&DC.vals[i]?DC.vals[i]:rnd(DC.sides));render();if(++k<8)setTimeout(step,55);else done()};step()}});
-const navV=()=>`<nav class="nav">${[['scores','Scores',IC_SC],['timer','Timer',IC_TM],['dice','Dice',IC_DC]].map(([k,l,ic])=>`<button class="${S.tab===k?'on':''}" data-a="navtab" data-v="${k}">${ic}${l}</button>`).join('')}</nav>`;
+const navV=()=>`<nav class="nav">${[['scores','Scores',IC_SC],['timer','Timer',IC_TM],['dice','Dice',IC_DC]].map(([k,l,ic])=>`<button class="${S.tab===k?'on':''}${S.tab===k&&S._navPop?' pop':''}" data-a="navtab" data-v="${k}">${ic}${l}</button>`).join('')}</nav>`;
 
 let drag=null,press=null,eatClick=false;
 app.addEventListener('pointerdown',e=>{const tile=e.target.closest('#tiles .tile');if(!tile)return;
