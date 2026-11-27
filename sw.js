@@ -1,5 +1,5 @@
 // Scorekeeper service worker: works offline, picks up new versions in the background.
-const CACHE = 'scorekeeper-v1.2.3';
+const CACHE = 'scorekeeper-v1.3';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon.svg', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
