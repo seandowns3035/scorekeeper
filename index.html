@@ -32,8 +32,8 @@
 [data-game=generic]{--ac:#c9d3e3;--ac2:#56627a;--glow:rgba(180,195,220,.10);--acink:#0b0f16}
 [data-game=chili]{--ac:#ff7a4d;--ac2:#3f9b72;--glow:rgba(255,95,55,.17);--acink:#2a0b00}
 *{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden;overscroll-behavior:none}
-#app{position:fixed;top:0;left:0;right:0;height:var(--apph,100vh);display:flex;flex-direction:column;overflow:hidden}
+html{min-height:calc(100% + env(safe-area-inset-top));overflow:hidden;overscroll-behavior:none}body{min-height:100%;overflow:hidden;overscroll-behavior:none}
+#app{position:fixed;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;overflow:hidden}
 .scroller{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
 body{margin:0;background:radial-gradient(120% 60% at 50% -10%,var(--glow),transparent 60%) fixed,var(--bg);color:var(--ink);font:16px/1.45 Figtree,system-ui,-apple-system,sans-serif;overflow-x:clip;font-variant-numeric:tabular-nums;-webkit-user-select:none;user-select:none}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;touch-action:manipulation}
@@ -361,7 +361,7 @@ button,.chip,.row,.key,.tile,.slot,.n7,.mod,.die{transition:transform .14s cubic
 @keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 @keyframes glow{from{box-shadow:inset 0 0 0 2px var(--ac),0 0 0 6px color-mix(in srgb,var(--ac) 25%,transparent)}}
 .confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
-.empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:12vh 20px 0}.empty .eart{width:110px;height:110px;margin-bottom:10px;opacity:.9}.empty b{font-size:24px;font-weight:900}.empty p{color:var(--mute);margin:0 0 16px}
+.nogame{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:12vh 20px 0}.nogame .eart{width:110px;height:110px;margin-bottom:10px;opacity:.9}.nogame b{font-size:24px;font-weight:900}.nogame p{color:var(--mute);margin:0 0 16px}
 /* modal */
 .scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:40;display:flex;align-items:flex-end;justify-content:center;padding:16px 16px calc(env(safe-area-inset-bottom) + 16px)}
 .modal{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:20px;width:100%;max-width:480px}.modal.anim{animation:up .2s}
@@ -418,7 +418,7 @@ const FLAG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wi
 const X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>';
 const BACK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
 const DOTS='<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
-const APP_VERSION='v1.2.2';
+const APP_VERSION='v1.2.3';
 const DEL='⌫';
 const GRIP='<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.8"/><circle cx="15" cy="6" r="1.8"/><circle cx="9" cy="12" r="1.8"/><circle cx="15" cy="12" r="1.8"/><circle cx="9" cy="18" r="1.8"/><circle cx="15" cy="18" r="1.8"/></svg>';
 const gameKeys=()=>{const all=Object.keys(GAMES),o=(S.order||[]).filter(k=>all.includes(k));return o.concat(all.filter(k=>!o.includes(k)))};
@@ -441,8 +441,7 @@ const S={tab:'games',prefs:Object.assign({sound:true},LS.get('prefs',{})),toast:
 if(S.game)S.tab='scores';
 const persist=()=>{LS.set('players',S.players);LS.set('lineups',S.lineups);LS.set('game',S.game)};
 const app=document.getElementById('app');
-const setH=()=>{let h=window.innerHeight;if(navigator.standalone){const sh=matchMedia('(orientation: portrait)').matches?screen.height:screen.width;if(sh>h&&sh-h<80)h=sh}document.documentElement.style.setProperty('--apph',h+'px')};setH();addEventListener('resize',setH);addEventListener('orientationchange',()=>setTimeout(setH,300));
-document.addEventListener('focusout',()=>setTimeout(()=>{window.scrollTo(0,0);setH()},60));
+document.addEventListener('focusout',()=>setTimeout(()=>window.scrollTo(0,0),60));
 
 /* ---------- scoring core ---------- */
 const totals=g=>{const t={};g.players.forEach(p=>t[p.id]=0);g.rounds.forEach(r=>{for(const id in r.scores)if(id in t)t[id]+=r.scores[id]});(g.adjs||[]).forEach(a=>{if(a.pid in t)t[a.pid]+=a.v});return t};
@@ -506,7 +505,7 @@ const colorOf=(g,id)=>(g.players.find(p=>p.id===id)||{}).color||'#999';
 const dotH=c=>`<span class="dot" style="background:${c}"></span>`;
 
 function noGameV(){document.documentElement.dataset.game='';
- return `<div class="wrap"><div class="bar"><span class="ghost"></span><h1>Score</h1><span class="ghost"></span></div><div class="empty">${ART.generic.replace('class="art"','class="eart"')}<b>No game going</b><p>Pick a game to start keeping score.</p><button class="btn" data-a="navtab" data-v="games">Choose a game</button></div></div>`}
+ return `<div class="wrap"><div class="bar"><span class="ghost"></span><h1>Score</h1><span class="ghost"></span></div><div class="nogame">${ART.generic.replace('class="art"','class="eart"')}<b>No game going</b><p>Pick a game to start keeping score.</p><button class="btn" data-a="navtab" data-v="games">Choose a game</button></div></div>`}
 function home(){
  document.documentElement.dataset.game='';
  const g=S.game;let h=`<div class="wrap"><div class="title">Scorekeeper</div>`;
