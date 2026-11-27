@@ -1,6 +1,6 @@
 # Scorekeeper
 
-A personal game-night scorekeeper: Skyjo, Flip 7: Vengeance, Five Crowns, Texas Chili, Skip-Bo, Phase 10, Farkle, and "Any game" (with teams). Includes a Timer tab and a Dice tab.
+A personal game-night scorekeeper: Skyjo, Flip 7: Vengeance, Five Crowns, Texas Chili, Skip-Bo, Phase 10, Farkle, and "Custom" for any other game (with teams). Includes a Timer tab and a Dice tab.
 
 Plain static site — no build step. Everything lives in `index.html`.
 

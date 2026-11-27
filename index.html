@@ -397,9 +397,9 @@ const GAMES={
  skipbo:{name:'Skip-Bo',low:false,target:500,min:2,max:6,tag:'Highest wins · race to 500'},
  phase10:{name:'Phase 10',low:true,min:2,max:6,tag:'Fewest points · 10 phases'},
  farkle:{name:'Farkle',low:false,target:10000,min:2,max:8,fixedStart:true,tag:'Highest wins · race to 10,000'},
- generic:{name:'Any game',low:false,target:null,min:1,max:12,tag:'Your rules · type in totals'}};
+ generic:{name:'Custom',low:false,target:null,min:1,max:12,tag:'Your rules · type in totals'}};
 const gdef=g=>Object.assign({},GAMES[g.key],g.cfg||{});
-function cfgToDef(key,c){if(key==='skipbo')return {target:Math.max(25,c.target||500)};if(key==='farkle')return {target:Math.max(500,c.target||10000)};if(key==='generic')return {name:(c.title||'').trim().slice(0,24)||'Any game',low:!!c.low,target:c.endBy==='target'?Math.max(1,c.target||100):null,rounds:c.endBy==='rounds'?Math.max(1,Math.min(99,c.rounds||10)):null};return {}}
+function cfgToDef(key,c){if(key==='skipbo')return {target:Math.max(25,c.target||500)};if(key==='farkle')return {target:Math.max(500,c.target||10000)};if(key==='generic')return {name:(c.title||'').trim().slice(0,24)||'Custom',low:!!c.low,target:c.endBy==='target'?Math.max(1,c.target||100):null,rounds:c.endBy==='rounds'?Math.max(1,Math.min(99,c.rounds||10)):null};return {}}
 const CFG0={skipbo:{target:500},farkle:{target:10000},generic:{title:'',low:false,endBy:'open',target:100,rounds:10}};
 const ART={
  skyjo:'<svg class="art" viewBox="0 0 100 100"><g transform="rotate(-14 50 60)"><rect x="14" y="22" width="40" height="56" rx="7" fill="#4146b4"/><text x="34" y="58" font-size="20" font-weight="900" text-anchor="middle" fill="#dfe1ff" font-family="Figtree">-2</text></g><g transform="rotate(2 50 60)"><rect x="32" y="16" width="40" height="56" rx="7" fill="#93d4f5"/><text x="52" y="52" font-size="22" font-weight="900" text-anchor="middle" fill="#06283a" font-family="Figtree">0</text></g><g transform="rotate(16 60 60)"><rect x="50" y="20" width="40" height="56" rx="7" fill="#c43a45"/><text x="70" y="56" font-size="20" font-weight="900" text-anchor="middle" fill="#ffe3e3" font-family="Figtree">12</text></g></svg>',
@@ -415,7 +415,7 @@ const FLAG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wi
 const X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>';
 const BACK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
 const DOTS='<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
-const APP_VERSION='v1.2';
+const APP_VERSION='v1.2.1';
 const DEL='⌫';
 const GRIP='<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.8"/><circle cx="15" cy="6" r="1.8"/><circle cx="9" cy="12" r="1.8"/><circle cx="15" cy="12" r="1.8"/><circle cx="9" cy="18" r="1.8"/><circle cx="15" cy="18" r="1.8"/></svg>';
 const gameKeys=()=>{const all=Object.keys(GAMES),o=(S.order||[]).filter(k=>all.includes(k));return o.concat(all.filter(k=>!o.includes(k)))};
